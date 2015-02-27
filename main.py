@@ -20,11 +20,35 @@ def hasStraight():
 			5 in die and \
 			6 in die
 
-count = 0
-for j in range(0,390000):
+def hasSmallStraight():
+	# ~21% chance on the first roll
+	return 	1 in die and \
+			2 in die and \
+			3 in die and \
+			4 in die\
+			or \
+			2 in die and \
+			3 in die and \
+			4 in die and \
+			5 in die\
+			or \
+			3 in die and \
+			4 in die and \
+			5 in die and \
+			6 in die 
+
+smallCount = 0
+largeCount = 0
+
+for j in range(0,1000):
 	for i in range(0,5):
 		die[i] = roll()
 
 	if hasStraight():
-		count += 1
-		print("Straight! (" + str(die) + " " + str(count) + " out of " + str(j) + " " + str(float(count)/float(j)) + ")")
+		largeCount += 1
+	if hasSmallStraight():
+		smallCount += 1
+
+print("Straight! (" + str(die) + " " + str(largeCount) + " out of " + str(j) + " " + str(float(largeCount)/float(j)) + ")")
+print("Small Straight! (" + str(die) + " " + str(smallCount) + " out of " + str(j) + " " + str(float(smallCount)/float(j)) + ")")
+
