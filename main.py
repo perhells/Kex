@@ -6,6 +6,8 @@ smallCount = 0
 largeCount = 0
 
 def play(count):
+	global smallCount
+	global largeCount
 	for i in range(0,10):
 		for j in range(0,5):
 			die[j] = roll()
