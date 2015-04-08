@@ -71,5 +71,5 @@ def hasSmallStraight():
 if len(sys.argv) != 2:
 		print("Expected one argument, " + str(len(sys.argv)-1) + " arguments found.")
 else:
-	for j in range(0,int(sys.argv[1])):
+	for j in range(1,int(sys.argv[1])+1):
 		play(j)
