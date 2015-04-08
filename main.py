@@ -39,6 +39,7 @@ def hasStraight():
 
 def hasSmallStraight():
 	# ~21% chance on the first roll
+	# 
 	return 	1 in die and \
 			2 in die and \
 			3 in die and \
