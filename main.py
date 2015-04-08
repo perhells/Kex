@@ -1,6 +1,14 @@
 import random
+import sys
 
 die = [1,2,3,4,5]
+
+def play():
+	for i in range(0,10):
+		for j in range(0,5):
+			die[j] = roll()
+	if hasStraight():
+		print("Straight!")
 
 def roll():
 	return random.randrange(1,7)
@@ -20,11 +28,9 @@ def hasStraight():
 			5 in die and \
 			6 in die
 
-count = 0
-for j in range(0,390000):
-	for i in range(0,5):
-		die[i] = roll()
 
-	if hasStraight():
-		count += 1
-		print("Straight! (" + str(die) + " " + str(count) + " out of " + str(j) + " " + str(float(count)/float(j)) + ")")
+if len(sys.argv) != 2:
+		print("Expected one argument, " + str(len(sys.argv)-1) + " arguments found.")
+else:
+	for j in range(0,int(sys.argv[1])):
+		play()
