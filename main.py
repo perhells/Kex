@@ -10,8 +10,10 @@ def play(count):
 		for j in range(0,5):
 			die[j] = roll()
 	if hasStraight():
+		largeCount += 1
 		print("Straight! (" + str(die) + " " + str(largeCount) + " out of " + str(count) + " " + str(float(largeCount)/float(count)) + ")")
 	elif hasSmallStraight():
+		smallCount += 1
 		print("Small Straight! (" + str(die) + " " + str(smallCount) + " out of " + str(count) + " " + str(float(smallCount)/float(count)) + ")")
 
 
