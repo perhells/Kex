@@ -31,6 +31,7 @@ def play():
 	global numberScore
 	global bonusCount
 	usedCombinations =[False,False,False,False,False,False,False,False,False,False,False,False,False]
+	combinationScores = [0,0,0,0,0,0,0,0,0,0,0,0,0]
 	# 0: Aces
 	# 1: Twos
 	# 2: Threes
@@ -47,40 +48,68 @@ def play():
 	while False in usedCombinations:
 		for j in range(0,5):
 			dice[j] = roll()
+
+		for k in range(0,2):
+			if not usedCombinations[9] and straight():
+				break
+			elif not usedCombinations[8] and smallStraight() or not usedCombinations[9] and smallStraight():
+				for i in range(1,7):
+					while dice.count(i) > 1:
+						fixed = False
+						for j in range(0,5):
+							if dice[j] == i:
+								dice[j] = roll()
+								fixed = True
+								break
+						if not fixed:
+							if sum(dice) == 16:
+								for k in range(0,5):
+									if dice[k] == 6:
+										dice[k] = roll()
+							else:
+								for k in range(0,5):
+									if dice[k] == 1:
+										dice[k] = roll()
+
+			else:
+				maxCount = 0
+				number = 0
+				for i in range(1,7):
+					if not usedCombinations[i-1] or not usedCombinations[6] or not usedCombinations[7] or not usedCombinations[10] or not usedCombinations[12]:
+						tempCount = 0
+						for die in dice:
+							if die == i:
+								tempCount += 1
+						if tempCount >= maxCount:
+							maxCount = tempCount
+							number = i
+							# print("DERP: " +str(number) + " : " + str(maxCount) + " -> " + str(usedCombinations[number-1]))
+				if number > 0:
+					for i in range(0,5):
+						if dice[i] != number:
+							dice[i] = roll()
+				else:
+					for i in range(0,5):
+						dice[i] = roll()
+
+
+
 		currentRound += 1
 		print(dice)
 		if not usedCombinations[12] and yahtzee():
 			score += 50
 			yahtzeeCount += 1
 			usedCombinations[12] = True
+			combinationScores[12] = 50
 			print("Yahtzee! (" + str(dice) + " " + str(yahtzeeCount) + " out of " + str(currentRound) + " " + str(float(yahtzeeCount)/float(currentRound)) + ")")
 		elif not usedCombinations[10] and fullHouse():
 			score += 25
 			fullCount += 1
 			usedCombinations[10] = True
+			combinationScores[10] = 25
 			print("Full House! (" + str(dice) + " " + str(fullCount) + " out of " + str(currentRound) + " " + str(float(fullCount)/float(currentRound)) + ")")
 		elif not usedCombinations[7] and fourOfAKind():
-			score += sum(dice)
-			fourCount += 1
-			usedCombinations[7] = True
-			print("Four of a Kind! (" + str(dice) + " " + str(fourCount) + " out of " + str(currentRound) + " " + str(float(fourCount)/float(currentRound)) + ")")
-		elif not usedCombinations[6] and threeOfAKind():
-			score += sum(dice)
-			threeCount += 1
-			usedCombinations[6] = True
-			print("Three of a Kind! (" + str(dice) + " " + str(threeCount) + " out of " + str(currentRound) + " " + str(float(threeCount)/float(currentRound)) + ")")
-		elif not usedCombinations[9] and straight():
-			score += 40
-			largeCount += 1
-			usedCombinations[9] = True
-			print("Straight! (" + str(dice) + " " + str(largeCount) + " out of " + str(currentRound) + " " + str(float(largeCount)/float(currentRound)) + ")")
-		elif not usedCombinations[8] and smallStraight():
-			score += 30
-			smallCount += 1
-			usedCombinations[8] = True
-			print("Small Straight! (" + str(dice) + " " + str(smallCount) + " out of " + str(currentRound) + " " + str(float(smallCount)/float(currentRound)) + ")")
-		else:
-			print("JA")
+
 			maxCount = 0
 			number = 0
 			for i in range(1,7):
@@ -92,33 +121,115 @@ def play():
 					if tempCount >= maxCount:
 						maxCount = tempCount
 						number = i
-						print("DERP: " +str(number) + " : " + str(maxCount) + " -> " + str(usedCombinations[number-1]))
+						# print("DERP: " +str(number) + " : " + str(maxCount) + " -> " + str(usedCombinations[number-1]))
+			if not usedCombinations[number-1]:
+				usedCombinations[number-1] = True
+				for die in dice:
+					if die == number:
+						combinationScores[number-1] += die
+						score += die
+						bonusScore += die
+			else:
+				score += sum(dice)
+				fourCount += 1
+				usedCombinations[7] = True
+				combinationScores[7] = sum(dice)
+				print("Four of a Kind! (" + str(dice) + " " + str(fourCount) + " out of " + str(currentRound) + " " + str(float(fourCount)/float(currentRound)) + ")")
+		elif not usedCombinations[6] and threeOfAKind():
+
+
+
+			maxCount = 0
+			number = 0
+			for i in range(1,7):
+				if not usedCombinations[i-1]:
+					tempCount = 0
+					for die in dice:
+						if die == i:
+							tempCount += 1
+					if tempCount >= maxCount:
+						maxCount = tempCount
+						number = i
+						# print("DERP: " +str(number) + " : " + str(maxCount) + " -> " + str(usedCombinations[number-1]))
+			if not usedCombinations[number-1]:
+				usedCombinations[number-1] = True
+				for die in dice:
+					if die == number:
+						combinationScores[number-1] += die
+						score += die
+						bonusScore += die
+			else:
+				score += sum(dice)
+				threeCount += 1
+				usedCombinations[6] = True
+				combinationScores[6] = sum(dice)
+				print("Three of a Kind! (" + str(dice) + " " + str(threeCount) + " out of " + str(currentRound) + " " + str(float(threeCount)/float(currentRound)) + ")")
+		elif not usedCombinations[9] and straight():
+			score += 40
+			largeCount += 1
+			usedCombinations[9] = True
+			combinationScores[9] = 40
+			print("Straight! (" + str(dice) + " " + str(largeCount) + " out of " + str(currentRound) + " " + str(float(largeCount)/float(currentRound)) + ")")
+		elif not usedCombinations[8] and smallStraight():
+			score += 30
+			smallCount += 1
+			usedCombinations[8] = True
+			combinationScores[8] = 30
+			print("Small Straight! (" + str(dice) + " " + str(smallCount) + " out of " + str(currentRound) + " " + str(float(smallCount)/float(currentRound)) + ")")
+		else:
+			# print("JA")
+			maxCount = 0
+			number = 0
+			for i in range(1,7):
+				if not usedCombinations[i-1]:
+					tempCount = 0
+					for die in dice:
+						if die == i:
+							tempCount += 1
+					if tempCount >= maxCount:
+						maxCount = tempCount
+						number = i
+						# print("DERP: " +str(number) + " : " + str(maxCount) + " -> " + str(usedCombinations[number-1]))
 			if number > 0:
 				usedCombinations[number-1] = True
 				print(str(number) + " had score " + str(score))
 				for die in dice:
 					if die == number:
+						combinationScores[number-1] += die
 						score += die
 						bonusScore += die
 				print(str(number) + " gave score " + str(score))
 			else:
 				if not usedCombinations[11]:
-					usedCombinations[11] = True
-					score += sum(dice)
+					# if sum(dice) <= 10 and not usedCombinations[12]:
+					# 	usedCombinations[12] = True
+					# else:
+						usedCombinations[11] = True
+						combinationScores[11] = sum(dice)
+						score += sum(dice)
 				else:
 					print(str(number) + " <- wtf")
-					for i in range(0,len(usedCombinations)):
+					vaskat = False
+					for i in range(6,len(usedCombinations)):
 						if usedCombinations[i] == False:
 							usedCombinations[i] = True
+							vaskat = True
 							break
+					if not vaskat:
+						for i in range(0,6):
+							if usedCombinations[i] == False:
+								usedCombinations[i] = True
+								vaskat = True
+								break
+
 	if bonusScore >= 63:
 		bonusCount += 1
 		score += 35
 		totalWithBonus += score
-		print("Score: " + str(score) + " (BONUS!)")
+		print("Score: " + str(score) + " (BONUS!) " + str(combinationScores))
 	else:
 		totalWithoutBonus += score
-		print("Score: " + str(score) + " (no bonus... bonus score: " + str(bonusScore) + ")")
+		print("Score: " + str(score) + " (no bonus... bonus score: " + str(bonusScore) + ") " + str(combinationScores))
 	numberScore += bonusScore
 	totalScore += score
 
