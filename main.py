@@ -408,7 +408,7 @@ else:
 	print()
 	print("1\t2\t3\t4\t5\t6\tThree\tFour\tSS\tLS\tFH\tCH\tY\tB\tA")
 	for score in totalScores:
-		print(str(score) + "\t", end="")
+		print(str("%.3f" % score) + "\t", end="")
 	print(str(float(bonusCount*35)/int(sys.argv[1])) + "\t", end="")
 	print(str(totalScore/int(sys.argv[1])) + "\t", end="")
 	print()
