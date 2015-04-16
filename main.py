@@ -1,3 +1,4 @@
+import os
 import random
 import sys
 
@@ -384,10 +385,30 @@ def fullHouse():
 if len(sys.argv) != 2:
 		print("Expected one argument, " + str(len(sys.argv)-1) + " arguments found.")
 else:
+	os.system('setterm -cursor off')
+	rows, columns = os.popen('stty size', 'r').read().split()
+	nom = True
 	for j in range(1,int(sys.argv[1])+1):
 		if j%(int(sys.argv[1])/100) == 0:
+			percentage = int(j/int(sys.argv[1])*100)
 			sys.stdout.write('\r')
-			sys.stdout.write(str(int(j/int(sys.argv[1])*100)) + "%")
+			sys.stdout.write('[')
+			for k in range (1, int((int(columns)-5)*percentage/100)):
+				sys.stdout.write(' ')
+			if nom:
+				sys.stdout.write('C')
+				nom = False
+			else:
+				sys.stdout.write('c')
+				nom = True
+			for k in range (int((int(columns)-5)*percentage/100), int(columns)-6):
+				if k % 2 == 0:
+					sys.stdout.write('·')
+				else:
+					sys.stdout.write(' ')
+			sys.stdout.write('] ')
+
+			sys.stdout.write(str(percentage) + "%")
 		play()
 	for i in range(0,len(totalScores)):
 		totalScores[i] = float(totalScores[i])/float(int(sys.argv[1]))
