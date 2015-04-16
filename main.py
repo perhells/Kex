@@ -84,7 +84,7 @@ def play():
 				maxCount = 0
 				number = 0
 				for i in range(1,7):
-					if not usedCombinations[i-1] or not usedCombinations[6] or not usedCombinations[7] or not usedCombinations[10] or not usedCombinations[12]:
+					if not usedCombinations[i-1]: # or not usedCombinations[6] or not usedCombinations[7] or not usedCombinations[10] or not usedCombinations[12]:
 						tempCount = 0
 						for die in dice:
 							if die == i:
@@ -385,6 +385,8 @@ if len(sys.argv) != 2:
 		print("Expected one argument, " + str(len(sys.argv)-1) + " arguments found.")
 else:
 	for j in range(1,int(sys.argv[1])+1):
+		if j%1000 == 0:
+			print(str(j))
 		play()
 	for i in range(0,len(totalScores)):
 		totalScores[i] = float(totalScores[i])/float(int(sys.argv[1]))
