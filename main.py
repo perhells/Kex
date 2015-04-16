@@ -385,8 +385,9 @@ if len(sys.argv) != 2:
 		print("Expected one argument, " + str(len(sys.argv)-1) + " arguments found.")
 else:
 	for j in range(1,int(sys.argv[1])+1):
-		if j%1000 == 0:
-			print(str(j))
+		if j%(int(sys.argv[1])/100) == 0:
+			sys.stdout.write('\r')
+			sys.stdout.write(str(int(j/int(sys.argv[1])*100)) + "%")
 		play()
 	for i in range(0,len(totalScores)):
 		totalScores[i] = float(totalScores[i])/float(int(sys.argv[1]))
