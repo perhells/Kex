@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import subprocess
 
 dice = [1,2,3,4,5]
 smallCount = 0
@@ -385,15 +386,22 @@ def fullHouse():
 if len(sys.argv) != 2:
 		print("Expected one argument, " + str(len(sys.argv)-1) + " arguments found.")
 else:
+	os.system('cls' if os.name == 'nt' else 'clear')
 	os.system('setterm -cursor off')
 	rows, columns = os.popen('stty size', 'r').read().split()
 	nom = True
+	# s = Sound() 
+	# s.read('pacman_chomp.wav') 
+	# s.play()
+	#subprocess.call(["afplay", "pacman_chomp.wav"])
+	# subprocess.call(["ffplay", "-nodisp", "-autoexit", "pacman_chomp.wav"])
+	# os.system("start pacman_chomp.wav")
 	for j in range(1,int(sys.argv[1])+1):
 		if j%(int(sys.argv[1])/100) == 0:
 			percentage = int(j/int(sys.argv[1])*100)
 			sys.stdout.write('\r')
-			sys.stdout.write('[')
-			for k in range (1, int((int(columns)-7)*percentage/100)):
+			sys.stdout.write(' [')
+			for k in range (1, int((int(columns)-8)*percentage/100)):
 				sys.stdout.write(' ')
 			if nom:
 				sys.stdout.write('C')
@@ -401,7 +409,7 @@ else:
 			else:
 				sys.stdout.write('c')
 				nom = True
-			for k in range (int((int(columns)-7)*percentage/100), int(columns)-7):
+			for k in range (int((int(columns)-8)*percentage/100), int(columns)-8):
 				if k % 2 == 0:
 					sys.stdout.write('·')
 				else:
@@ -424,7 +432,10 @@ else:
 			print()
 			print(str(i) + ":" + str(stats[i]), end="")
 		else:
-			print("\t\t" + str(i) + ":" + str(stats[i]), end="")
+			if len(str(stats[i-1])) < 4:
+				print("\t\t" + str(i) + ":" + str(stats[i]), end="")
+			else:
+				print("\t" + str(i) + ":" + str(stats[i]), end="")
 	print()
 	print()
 	print("1\t2\t3\t4\t5\t6\tThree\tFour\tSS\tLS\tFH\tCH\tY\tB\tA")
@@ -433,3 +444,4 @@ else:
 	print(str(float(bonusCount*35)/int(sys.argv[1])) + "\t", end="")
 	print(str(totalScore/int(sys.argv[1])) + "\t", end="")
 	print()
+	os.system('setterm -cursor on')
