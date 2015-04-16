@@ -393,7 +393,7 @@ else:
 			percentage = int(j/int(sys.argv[1])*100)
 			sys.stdout.write('\r')
 			sys.stdout.write('[')
-			for k in range (1, int((int(columns)-5)*percentage/100)):
+			for k in range (1, int((int(columns)-7)*percentage/100)):
 				sys.stdout.write(' ')
 			if nom:
 				sys.stdout.write('C')
@@ -401,7 +401,7 @@ else:
 			else:
 				sys.stdout.write('c')
 				nom = True
-			for k in range (int((int(columns)-5)*percentage/100), int(columns)-6):
+			for k in range (int((int(columns)-7)*percentage/100), int(columns)-7):
 				if k % 2 == 0:
 					sys.stdout.write('·')
 				else:
