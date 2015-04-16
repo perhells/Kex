@@ -105,7 +105,7 @@ def play():
 		currentRound += 1
 		# print(dice)
 		if not usedCombinations[12] and yahtzee():
-			if not usedCombinations[dice[0]-1] and dice[0] >= 5 and bonusScore + 15 < 63:
+			if not usedCombinations[dice[0]-1] and dice[0] >= 5 and bonusScore < 63:
 				usedCombinations[dice[0]-1] = True
 				score += sum(dice)
 				combinationScores[dice[0]-1] = sum(dice)
@@ -139,7 +139,7 @@ def play():
 						maxCount = tempCount
 						number = i
 						# print("DERP: " +str(number) + " : " + str(maxCount) + " -> " + str(usedCombinations[number-1]))
-			if number >= 5 and not usedCombinations[number-1] and bonusScore + 15 < 63:
+			if number >= 4 and not usedCombinations[number-1]:# and bonusScore + 20 < 63:
 				usedCombinations[number-1] = True
 				# print("Bonus was: " + str(bonusScore))
 				for die in dice:
@@ -168,7 +168,7 @@ def play():
 						maxCount = tempCount
 						number = i
 						# print("DERP: " +str(number) + " : " + str(maxCount) + " -> " + str(usedCombinations[number-1]))
-			if number >= 5 and not usedCombinations[number-1]:
+			if number >= 4 and not usedCombinations[number-1]:# and bonusScore + 15 < 63:
 				usedCombinations[number-1] = True
 				# print("Bonus was: " + str(bonusScore))
 				for die in dice:
@@ -420,13 +420,20 @@ else:
 		play()
 	for i in range(0,len(totalScores)):
 		totalScores[i] = float(totalScores[i])/float(int(sys.argv[1]))
+	print("Total rounds: " + str(sys.argv[1]))
 	print("Average score: " + str(totalScore/int(sys.argv[1])))
 	print("Bonus count: " + str(bonusCount) + " (Average score " + str(float(bonusCount*35)/int(sys.argv[1])) + ")")
 	print("Bonus missing count: " + str(int(sys.argv[1])-bonusCount) + " (Average score " + str(totalWithoutBonus/int(sys.argv[1])) + ")")
 	print("Number score: " + str(numberScore/int(sys.argv[1])))
 	print("Lowest: " + str(lowest) + " Highest: " + str(highest))
+
 	print(str(highestScores))
-	for i in range(18,376):
+	for i in range(1, lowest % 10):
+		print("\t\t", end="")
+	counter = 0
+	percentile = [lowest,0,0,0,0,0,0,0,0,0,0]
+	index = 1
+	for i in range(lowest,highest+1):
 		# print(str(i) + "\t" + str(stats[i]))
 		if i%10 == 0:
 			print()
@@ -436,12 +443,22 @@ else:
 				print("\t\t" + str(i) + ":" + str(stats[i]), end="")
 			else:
 				print("\t" + str(i) + ":" + str(stats[i]), end="")
+		counter += stats[i]
+		if counter - int(sys.argv[1])/10 >= 0:
+			percentile[index] = i
+			counter -= int(sys.argv[1])/10
+			index += 1
 	print()
 	print()
 	print("1\t2\t3\t4\t5\t6\tThree\tFour\tSS\tLS\tFH\tCH\tY\tB\tA")
 	for score in totalScores:
 		print(str("%.3f" % score) + "\t", end="")
-	print(str(float(bonusCount*35)/int(sys.argv[1])) + "\t", end="")
-	print(str(totalScore/int(sys.argv[1])) + "\t", end="")
+	print(str("%.3f" % (float(bonusCount*35)/int(sys.argv[1]))) + "\t", end="")
+	print(str("%.3f" % (totalScore/int(sys.argv[1]))) + "\t", end="")
+	print()
+	print()
+	print("0%\t10%\t20%\t30%\t40%\t50%\t60%\t70%\t80%\t90%\t100%")
+	for score in percentile:
+		print(str(score) + "\t", end="")
 	print()
 	os.system('setterm -cursor on')
