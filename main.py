@@ -464,4 +464,3 @@ else:
 		print(str(score) + "\t", end="")
 	print()
 	os.system('setterm -cursor on')
-	print(os.name)
