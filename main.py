@@ -105,7 +105,7 @@ def play():
 		currentRound += 1
 		# print(dice)
 		if not usedCombinations[12] and yahtzee():
-			if not usedCombinations[dice[0]-1] and dice[0] >= 5 and bonusScore < 63:
+			if not usedCombinations[dice[0]-1] and dice[0] >= 6 and bonusScore + 25 < 63:
 				usedCombinations[dice[0]-1] = True
 				score += sum(dice)
 				combinationScores[dice[0]-1] = sum(dice)
@@ -139,7 +139,7 @@ def play():
 						maxCount = tempCount
 						number = i
 						# print("DERP: " +str(number) + " : " + str(maxCount) + " -> " + str(usedCombinations[number-1]))
-			if number >= 4 and not usedCombinations[number-1]:# and bonusScore + 20 < 63:
+			if number >= 6 and not usedCombinations[number-1] and bonusScore + 20 < 63:
 				usedCombinations[number-1] = True
 				# print("Bonus was: " + str(bonusScore))
 				for die in dice:
@@ -168,7 +168,7 @@ def play():
 						maxCount = tempCount
 						number = i
 						# print("DERP: " +str(number) + " : " + str(maxCount) + " -> " + str(usedCombinations[number-1]))
-			if number >= 4 and not usedCombinations[number-1]:# and bonusScore + 15 < 63:
+			if number >= 6 and not usedCombinations[number-1] and bonusScore + 15 < 63:
 				usedCombinations[number-1] = True
 				# print("Bonus was: " + str(bonusScore))
 				for die in dice:
@@ -422,8 +422,10 @@ else:
 		totalScores[i] = float(totalScores[i])/float(int(sys.argv[1]))
 	print("Total rounds: " + str(sys.argv[1]))
 	print("Average score: " + str(totalScore/int(sys.argv[1])))
-	print("Bonus count: " + str(bonusCount) + " (Average score " + str(float(bonusCount*35)/int(sys.argv[1])) + ")")
-	print("Bonus missing count: " + str(int(sys.argv[1])-bonusCount) + " (Average score " + str(totalWithoutBonus/int(sys.argv[1])) + ")")
+	print("Bonus percentage: " + str("%.3f" % (bonusCount/int(sys.argv[1])*100)) + "% (Average score " + str(float(bonusCount*35)/int(sys.argv[1])) + ")")
+	# print("Average score without bonus: " + str(totalWithoutBonus/int(sys.argv[1])))
+	# print("Bonus count: " + str(bonusCount) + " (Average score " + str(float(bonusCount*35)/int(sys.argv[1])) + ")")
+	# print("Bonus missing count: " + str(int(sys.argv[1])-bonusCount) + " (Average score " + str(totalWithoutBonus/int(sys.argv[1])) + ")")
 	print("Number score: " + str(numberScore/int(sys.argv[1])))
 	print("Lowest: " + str(lowest) + " Highest: " + str(highest))
 
@@ -462,3 +464,4 @@ else:
 		print(str(score) + "\t", end="")
 	print()
 	os.system('setterm -cursor on')
+	print(os.name)
