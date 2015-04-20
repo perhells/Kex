@@ -424,8 +424,9 @@ else:
 	print("Lowest: " + str(lowest) + " Highest: " + str(highest))
 
 	print(str(highestScores))
-	for i in range(1, lowest % 10):
-		print("\t\t", end="")
+	if sys.argv[len(sys.argv)-1] != "data":
+		for i in range(1, lowest % 10):
+			print("\t\t", end="")
 	counter = 0
 	percentile = [lowest,0,0,0,0,0,0,0,0,0,0]
 	index = 1
@@ -441,11 +442,11 @@ else:
 					print("\t\t" + str(i) + ":" + str(stats[i]), end="")
 				else:
 					print("\t" + str(i) + ":" + str(stats[i]), end="")
-			counter += stats[i]
-			if counter - int(sys.argv[1])/10 >= 0:
-				percentile[index] = i
-				counter -= int(sys.argv[1])/10
-				index += 1
+		counter += stats[i]
+		if counter - int(sys.argv[1])/10 >= 0:
+			percentile[index] = i
+			counter -= int(sys.argv[1])/10
+			index += 1
 	print()
 	print()
 	print("1\t2\t3\t4\t5\t6\tThree\tFour\tSS\tLS\tFH\tCH\tY\tB\tA")
