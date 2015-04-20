@@ -383,21 +383,15 @@ def fullHouse():
 				return True
 	return False
 
-if len(sys.argv) != 2:
-		print("Expected one argument, " + str(len(sys.argv)-1) + " arguments found.")
+if len(sys.argv) < 2:
+		print("Expected at least one argument, " + str(len(sys.argv)-1) + " arguments found.")
 else:
 	os.system('cls' if os.name == 'nt' else 'clear')
 	os.system('setterm -cursor off')
 	rows, columns = os.popen('stty size', 'r').read().split()
 	nom = True
-	# s = Sound() 
-	# s.read('pacman_chomp.wav') 
-	# s.play()
-	#subprocess.call(["afplay", "pacman_chomp.wav"])
-	# subprocess.call(["ffplay", "-nodisp", "-autoexit", "pacman_chomp.wav"])
-	# os.system("start pacman_chomp.wav")
 	for j in range(1,int(sys.argv[1])+1):
-		if j%(int(sys.argv[1])/100) == 0:
+		if j%(int(sys.argv[1])/100) == 0 and len(sys.argv) == 2:
 			percentage = int(j/int(sys.argv[1])*100)
 			sys.stdout.write('\r')
 			sys.stdout.write(' [')
@@ -436,20 +430,22 @@ else:
 	percentile = [lowest,0,0,0,0,0,0,0,0,0,0]
 	index = 1
 	for i in range(lowest,highest+1):
-		# print(str(i) + "\t" + str(stats[i]))
-		if i%10 == 0:
-			print()
-			print(str(i) + ":" + str(stats[i]), end="")
+		if sys.argv[len(sys.argv)-1] == "data":
+			print(str(i) + "\t" + str(stats[i]))
 		else:
-			if len(str(stats[i-1])) < 4:
-				print("\t\t" + str(i) + ":" + str(stats[i]), end="")
+			if i%10 == 0:
+				print()
+				print(str(i) + ":" + str(stats[i]), end="")
 			else:
-				print("\t" + str(i) + ":" + str(stats[i]), end="")
-		counter += stats[i]
-		if counter - int(sys.argv[1])/10 >= 0:
-			percentile[index] = i
-			counter -= int(sys.argv[1])/10
-			index += 1
+				if len(str(stats[i-1])) < 4:
+					print("\t\t" + str(i) + ":" + str(stats[i]), end="")
+				else:
+					print("\t" + str(i) + ":" + str(stats[i]), end="")
+			counter += stats[i]
+			if counter - int(sys.argv[1])/10 >= 0:
+				percentile[index] = i
+				counter -= int(sys.argv[1])/10
+				index += 1
 	print()
 	print()
 	print("1\t2\t3\t4\t5\t6\tThree\tFour\tSS\tLS\tFH\tCH\tY\tB\tA")
