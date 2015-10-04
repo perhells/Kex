@@ -1,5 +1,6 @@
 import os
 import random
+import signal
 import sys
 import subprocess
 import platform
@@ -22,10 +23,17 @@ highest = 0
 highestScores = [0,0,0,0,0,0,0,0,0,0,0,0,0]
 totalScores = [0,0,0,0,0,0,0,0,0,0,0,0,0]
 
+def signal_handler(signal, frame):
+        print()
+        print("Aborting...")
+        os.system('setterm -cursor on')
+        sys.exit(0)
+
 def play():
     score = 0
     currentRound = 0
     bonusScore = 0
+    global dice
     global usedCombinations
     global smallCount
     global largeCount
@@ -390,6 +398,7 @@ else:
     os.system('cls' if os.name == 'nt' else 'clear')
     if platform.system() == 'Linux':
         os.system('setterm -cursor off')
+        signal.signal(signal.SIGINT, signal_handler)
     rows, columns = os.popen('stty size', 'r').read().split()
     nom = True
     for j in range(1,int(sys.argv[1])+1):
